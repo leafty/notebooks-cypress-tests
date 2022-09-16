@@ -11,7 +11,6 @@ a user accesses the session.
 The package exposes 3 functions:
 - `basicJupyterTests`
 - `basicRstudioTests`
-- `registerCustomCommands`
 
 The first two simply execute a Mocha test suite. They can be inserted in an
 existing Mocha test suite in an existing Cypress test spec.
@@ -26,9 +25,7 @@ There are two ways to use this package:
 ## Importing and using the tests
 
 ```javascript
-import { basicJupyterTests, basicRstudioTests, registerCustomCommands } from renku@notebooks-cypress-tests
-
-registerCustomCommands()
+import { basicJupyterTests, basicRstudioTests } from renku@notebooks-cypress-tests
 
 describe('Basic Rstudio functionality', function () {
   basicJupyterTests(session_url)

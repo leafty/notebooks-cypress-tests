@@ -1,6 +1,12 @@
+import { registerCustomCommands } from "../support/commands";
+
 export const basicJupyterTests = (url_or_path: string, username: string = "", password: string = "") => {
   const url = url_or_path.slice(-1) === "/" ? url_or_path.slice(0, -1) : url_or_path
   describe('Test jupyter notebook', function () {
+    before(() => {
+      require("cypress-network-idle");
+      registerCustomCommands();
+    })
     beforeEach(() => {
       Cypress.Cookies.preserveOnce('_oauth2_proxy', "_xsrf")
     })
@@ -9,7 +15,9 @@ export const basicJupyterTests = (url_or_path: string, username: string = "", pa
         cy.renkuLoginIfRequired(username, password).then(() => {
           cy.location('pathname')
             .should('include', url);
+          // @ts-ignore
           cy.waitForNetworkIdle('GET', `${url}/static/**`, 5000)
+          // @ts-ignore
           cy.waitForNetworkIdle('GET', `${url}/extensions/**`, 5000)
         })
       })
@@ -22,6 +30,7 @@ export const basicJupyterTests = (url_or_path: string, username: string = "", pa
     })
     it('Can launch terminal', function () {
       cy.get('div.jp-LauncherCard[title="Start a new terminal session"]').click().then(() => {
+        // @ts-ignore
         cy.waitForNetworkIdle("*", `${url}/api/terminals/**`, 5000)
       }).then(() => {
         cy.get('#jp-main-dock-panel > .lm-TabBar > .lm-TabBar-content').should("include.text", "Terminal")
@@ -38,6 +47,8 @@ export const basicJupyterTests = (url_or_path: string, username: string = "", pa
       cy.get('body').then((body) => {
         if (body.find("div.xterm-screen").length == 1) {
           cy.wrap(body.find("div.xterm-screen")[0]).click().type("rm new-file.txt{enter}")
+          // @ts-ignore
+          cy.waitForNetworkIdle("*", `${url}/api/terminals/**`, 5000)
         }
         for (var closeButton of body.find('.lm-TabBar-tabCloseIcon').toArray()) {
           cy.wrap(closeButton).click()
@@ -50,6 +61,10 @@ export const basicJupyterTests = (url_or_path: string, username: string = "", pa
 export const basicRstudioTests = (url_or_path: string, username: string = "", password: string = "") => {
   const url = url_or_path.slice(-1) === "/" ? url_or_path.slice(0, -1) : url_or_path
   describe('Basic functionality', function () {
+    before(() => {
+      require("cypress-network-idle");
+      registerCustomCommands();
+    })
     beforeEach(() => {
       Cypress.Cookies.preserveOnce('_oauth2_proxy', "csrf-token", "rs-csrf-token", "user-id", "port-token")
     })
@@ -58,7 +73,9 @@ export const basicRstudioTests = (url_or_path: string, username: string = "", pa
         cy.renkuLoginIfRequired(username, password).then((_) => {
           cy.location('pathname')
             .should('include', url);
+          // @ts-ignore
           cy.waitForNetworkIdle('GET', `${url}/rstudio/rstudio/**`, 5000)
+          // @ts-ignore
           cy.waitForNetworkIdle('POST', `${url}/rstudio/rpc/**`, 5000)
         })
       })
@@ -73,7 +90,9 @@ export const basicRstudioTests = (url_or_path: string, username: string = "", pa
     })
     it('Can launch a terminal', function () {
       cy.get('#rstudio_workbench_tab_terminal').click().then(() => {
+        // @ts-ignore
         cy.waitForNetworkIdle('GET', `${url}/rstudio/rstudio/**`, 5000)
+        // @ts-ignore
         cy.waitForNetworkIdle('POST', `${url}/rstudio/rpc/**`, 5000)
       }).then(() => {
         cy.get('#rstudio_terminal_dropdown_menubutton').should("include.text", "Terminal")
@@ -90,6 +109,10 @@ export const basicRstudioTests = (url_or_path: string, username: string = "", pa
       cy.get('body').then((body) => {
         if (body.find(".xterm-cursor-layer").length == 1) {
           cy.wrap(body.find("div.xterm-screen")[0]).click().type("rm new-file.txt{enter}")
+          // @ts-ignore
+          cy.waitForNetworkIdle('GET', `${url}/rstudio/rstudio/**`, 5000)
+          // @ts-ignore
+          cy.waitForNetworkIdle('POST', `${url}/rstudio/rpc/**`, 5000)
         }
         for (var closeButton of body.find('#rstudio_tb_closeterminal').toArray()) {
           cy.wrap(closeButton).click()
