@@ -1,0 +1,39 @@
+{
+  "name": "@renku/notebooks-cypress-tests",
+  "version": "0.0.4",
+  "description": "Set of cypress tests used for renku notebooks sessions",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && npm run build:esm && npm run build:cjs",
+    "build:cjs": "tsc --module CommonJS --outdir dist/cjs",
+    "build:esm": "tsc"
+  },
+  "author": "Swiss Data Science Center",
+  "dependencies": {
+    "cypress": "^10.8.0",
+    "cypress-network-idle": "^1.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwissDataScienceCenter/notebooks-cypress-tests.git"
+  },
+  "keywords": [
+    "renku",
+    "jupyter",
+    "rstudio",
+    "cypress",
+    "tests"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SwissDataScienceCenter/notebooks-cypress-tests/issues"
+  },
+  "homepage": "https://github.com/SwissDataScienceCenter/notebooks-cypress-tests#readme"
+}
