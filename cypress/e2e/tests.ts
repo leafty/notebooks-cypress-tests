@@ -13,8 +13,9 @@ export const basicJupyterTests = (url_or_path: string, username: string = "", pa
     it('Successfully loads', function () {
       cy.visit(url).then(() => {
         cy.renkuLoginIfRequired(username, password).then(() => {
-          cy.location('pathname')
-            .should('include', url);
+          cy.location().should((loc) => {
+            expect(loc.toString()).to.include(url)
+          });
           // @ts-ignore
           cy.waitForNetworkIdle('GET', `${url}/static/**`, 5000)
           // @ts-ignore
@@ -33,14 +34,12 @@ export const basicJupyterTests = (url_or_path: string, username: string = "", pa
         // @ts-ignore
         cy.waitForNetworkIdle("*", `${url}/api/terminals/**`, 5000)
       }).then(() => {
-        cy.get('#jp-main-dock-panel > .lm-TabBar > .lm-TabBar-content').should("include.text", "Terminal")
-        cy.get('.xterm-cursor-layer')
+        cy.get('div.xterm-screen')
       })
     })
     it('Runs a command in the terminal to make new file', function () {
-      cy.get('canvas.xterm-link-layer')
       cy.get('div.xterm-screen').click().type("touch new-file.txt{enter}")
-      cy.get('button[title="Refresh File List"]').click()
+      cy.get('#filebrowser > .jp-Toolbar > :nth-child(4)').click()
       cy.get('.jp-DirListing-content').should("contain.text", "new-file.txt")
     })
     after(() => {
@@ -71,8 +70,9 @@ export const basicRstudioTests = (url_or_path: string, username: string = "", pa
     it('Successfully loads', function () {
       cy.visit(url).then(() => {
         cy.renkuLoginIfRequired(username, password).then((_) => {
-          cy.location('pathname')
-            .should('include', url);
+          cy.location().should((loc) => {
+            expect(loc.toString()).to.include(url)
+          });
           // @ts-ignore
           cy.waitForNetworkIdle('GET', `${url}/rstudio/rstudio/**`, 5000)
           // @ts-ignore
