@@ -49,7 +49,7 @@ export const basicJupyterTests = (url_or_path: string, username: string = "", pa
           // @ts-ignore
           cy.waitForNetworkIdle("*", `${url}/api/terminals/**`, 5000)
         }
-        for (var closeButton of body.find('.lm-TabBar-tabCloseIcon').toArray()) {
+        for (var closeButton of body.find('#jp-main-dock-panel >* .lm-TabBar-tabCloseIcon').toArray()) {
           cy.wrap(closeButton).click()
         }
       })
@@ -102,7 +102,7 @@ export const basicRstudioTests = (url_or_path: string, username: string = "", pa
       cy.get('.xterm-cursor-layer').click().type("touch new-file.txt{enter}").then(() => {
         cy.get('#rstudio_tb_refreshfiles').click()
       }).then(() => {
-        cy.get('div.GEL-OVUBEDC >> div.GEL-OVUBMH').should("contain.text", "new-file.txt")
+        cy.get('div.GEL-OVUBEDC >* div.GEL-OVUBMH').should("contain.text", "new-file.txt")
       })
     })
     after(() => {
