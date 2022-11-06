@@ -1,7 +1,7 @@
 # Cypress tests for Jupyter and Rstudio
 
 The main goal of this package is to provide reusable code for testing
-the basic functionality of a Jupyter or Rstudio sessions. This is because
+the basic functionality of a Jupyter or Rstudio session. This is because
 it can happen that a Jupyterlab server seems to be properly up and running
 (from the outisde) but it is misconfigured or unusable in some way when
 a user accesses the session.
@@ -9,11 +9,14 @@ a user accesses the session.
 ## How to use
 
 The package exposes 3 functions:
-- `basicJupyterTests`
-- `basicRstudioTests`
+- `rstudioTestFuncs`
+- `jupyterlabTestFuncs`
+- `registerCustomCommands`
 
-The first two simply execute a Mocha test suite. They can be inserted in an
-existing Mocha test suite in an existing Cypress test spec.
+The first two are objects that contain functions which in turn execute different
+sets of cypress commands and assertions. These could be made into custom cypress commands
+but they are currently not. They can simply be imported and used anywhere where cypress is
+installed.
 
 The last function registers all the required custom commands used
 by the two functions that run the tests.
@@ -25,19 +28,30 @@ There are two ways to use this package:
 ## Importing and using the tests
 
 ```javascript
-import { basicJupyterTests, basicRstudioTests } from renku@notebooks-cypress-tests
+import { jupyterlabTestFuncs, rstudioTestFuncs } from renku@notebooks-cypress-tests
 
 describe('Basic Rstudio functionality', function () {
-  basicJupyterTests(session_url)
+  it('Opens the session', () => { cy.visit() })
+  it('Can launch a terminal', rstudioTestFuncs.launchTerminal)
 })
 
-describe('Basic Rstudio functionality', function () {
-  basicRstudioTests(session_url)
+describe('Basic Jupyterlab functionality', function () {
+  it('Opens the session', () => { cy.visit() })
+  it('Can launch a terminal', jupyterlabTestFuncs.launchTerminal)
 })
 ```
 
-The functions also optionally accept a username and password to log in to Renku
-if a login is required.
+Please note that the functions will not navigate to any other page. They will also not handle
+any logging in requirements or similar operations. All of this should be done in advance.
+For logging in there is a custom command that can do this. So if you wish to use this custom
+command then please use the `registerCustomCommands` function before running your tests.
+Alternatively you can simply make your own login function as needed.
+
+**Another important aspect** is that both Jupyterlab and Rstudio expect a set of cookies
+to be available on the client so that they work properly. So when you run tests on them 
+you should ensure these cookies are not cleared after every test. You can refer to the tests
+in the `e2e` folder in this repo to see the relevant cookies and how they can be preserved across
+different tests.
 
 ## Running the cypress tests directly
 

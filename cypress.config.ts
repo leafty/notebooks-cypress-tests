@@ -8,5 +8,6 @@ export default defineConfig({
   env: {
     USERNAME: process.env.TEST_USERNAME,
     PASSWORD: process.env.TEST_PASSWORD
-  }
+  },
+  chromeWebSecurity: false,
 })

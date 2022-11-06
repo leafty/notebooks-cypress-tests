@@ -1,4 +1,3 @@
-import { basicJupyterTests as _basicJupyterTests, basicRstudioTests as _basicRstudioTests } from "./cypress/e2e/tests";
-
-export const basicJupyterTests = _basicJupyterTests
-export const basicRstudioTests = _basicRstudioTests
+export { testSnippets as rstudioTestFuncs } from "./cypress/support/commands/rstudio";
+export { testSnippets as jupyterlabTestFuncs } from "./cypress/support/commands/jupyterlab";
+export { registerCustomCommands } from "./cypress/support/commands";
