@@ -14,8 +14,7 @@
   },
   "author": "Swiss Data Science Center",
   "dependencies": {
-    "cypress": "^10.8.0",
-    "cypress-network-idle": "^1.10.0"
+    "cypress": "^10.8.0"
   },
   "devDependencies": {
     "typescript": "^4.8.3"
