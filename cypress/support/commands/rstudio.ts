@@ -69,7 +69,7 @@ const closeTerminal = () => {
   cy.get("body")
     .find("#rstudio_tb_closeterminal")
     .each(($el, _, __) => {
-      cy.wrap($el).click();
+      cy.wrap($el).click({ force: true });
     });
   cy.get("#rstudio_workbench_tab_console")
     .click()
