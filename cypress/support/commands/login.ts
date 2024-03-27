@@ -7,3 +7,15 @@ export default (username: string, password: string) => {
     }
   })
 }
+
+export function validateLogin(username: string, password: string) {
+  cy.url().then((url) => {
+    if (
+      url.includes("realms/Renku/protocol/openid-connect") &&
+      username.length > 0 &&
+      password.length > 0
+    ) {
+      return false;
+    }
+  });
+}
