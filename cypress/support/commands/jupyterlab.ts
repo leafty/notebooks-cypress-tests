@@ -49,14 +49,15 @@ const removeFileWithTerminal = (fname: string) => () => {
 };
 
 const closeTerminal = () => {
+  cy.wait(5_000);
   cy.get('[role="tablist"]')
     .contains('[role="tab"]', "Terminal")
     .should("be.visible");
   cy.get("body")
     .find('[role="tablist"] .lm-TabBar-tabCloseIcon')
     .each(function ($el) {
-      console.log($el);
       cy.wrap($el).click({ force: true });
+      cy.wait(1_000);
     });
 };
 
