@@ -68,7 +68,7 @@ const removeFileWithTerminal = (fname: string) => () => {
 const closeTerminal = () => {
   cy.get("body")
     .find("#rstudio_tb_closeterminal")
-    .each(($el, _, __) => {
+    .each(($el) => {
       cy.wrap($el).click({ force: true });
     });
   cy.get("#rstudio_workbench_tab_console")
